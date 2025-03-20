@@ -1,0 +1,13 @@
+server:
+  host: 127.0.0.1
+  port: 8080
+
+db:
+  host: db
+  port: 5432
+  user: postgres
+  pass: 1234
+  name: cookDB
+
+jwt:
+  secret_key: "c2f8d9b1ec5b49c6a8e7c9b0a2d2a04176f1cfcd57e64fb2be8a28f3e71c27b2"
