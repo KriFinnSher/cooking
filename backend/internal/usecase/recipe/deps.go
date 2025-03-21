@@ -11,4 +11,5 @@ type Repo interface {
 	GetUserRecipes(ctx context.Context, userID int) ([]models.Recipe, error)
 	UpdateRecipe(ctx context.Context, recipeID int, title string, ingredients map[string]int, recipeText string) error
 	DeleteRecipe(ctx context.Context, recipeID int) error
+	GetAll(ctx context.Context) ([]models.Recipe, error)
 }

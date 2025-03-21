@@ -34,6 +34,14 @@ func (r *RecipeUseCase) GetAllUserRecipes(ctx context.Context, userID int) ([]mo
 	return recipes, nil
 }
 
+func (r *RecipeUseCase) GetAllRecipes(ctx context.Context) ([]models.Recipe, error) {
+	recipes, err := r.RecipeRepo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return recipes, nil
+}
+
 func (r *RecipeUseCase) UpdateRecipeDetails(ctx context.Context, recipeID int, title string, ingredients map[string]int, recipeText string) error {
 	err := r.RecipeRepo.UpdateRecipe(ctx, recipeID, title, ingredients, recipeText)
 	if err != nil {

@@ -21,6 +21,18 @@ type AuthHandler struct {
 	ChefUseCase *usecase.ChefUseCase
 }
 
+type ChefResponse struct {
+	Username       string  `json:"username"`
+	FollowersCount int     `json:"followers"`
+	Bio            *string `json:"bio,omitempty"`
+	Avatar         *string `json:"avatar,omitempty"`
+}
+
+type UserResponse struct {
+	Username string  `json:"username"`
+	Avatar   *string `json:"avatar,omitempty"`
+}
+
 func NewAuthHandler(userUseCase *usecase.UserUseCase, chefUseCase *usecase.ChefUseCase) *AuthHandler {
 	return &AuthHandler{UserUseCase: userUseCase, ChefUseCase: chefUseCase}
 }
@@ -65,4 +77,34 @@ func (h *AuthHandler) Authenticate(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, AuthResponse{Token: token})
+}
+
+func (h *AuthHandler) ShowChefProfile(ctx echo.Context) error {
+	username := ctx.Get("username").(string)
+	chefDetails, err := h.ChefUseCase.GetChefInfo(ctx.Request().Context(), username)
+	if err != nil {
+		return ctx.JSON(http.StatusNotFound, "profile not found")
+	}
+	response := ChefResponse{
+		Username:       chefDetails.Name,
+		FollowersCount: chefDetails.FollowersCount,
+		Bio:            chefDetails.Bio,
+		Avatar:         chefDetails.Avatar,
+	}
+
+	return ctx.JSON(http.StatusOK, response)
+}
+
+func (h *AuthHandler) ShowUserProfile(ctx echo.Context) error {
+	username := ctx.Get("username").(string)
+	userDetails, err := h.UserUseCase.GetUserInfo(ctx.Request().Context(), username)
+	if err != nil {
+		return ctx.JSON(http.StatusNotFound, "profile not found")
+	}
+	response := UserResponse{
+		Username: userDetails.Name,
+		Avatar:   userDetails.Avatar,
+	}
+
+	return ctx.JSON(http.StatusOK, response)
 }

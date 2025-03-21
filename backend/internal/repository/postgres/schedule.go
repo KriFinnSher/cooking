@@ -49,10 +49,9 @@ func (r *ScheduleRepo) GetEvent(ctx context.Context, eventID int) (models.Schedu
 	return schedule, nil
 }
 
-func (r *ScheduleRepo) GetChefEvents(ctx context.Context, chefID int) ([]models.Schedule, error) {
+func (r *ScheduleRepo) GetAllEvents(ctx context.Context) ([]models.Schedule, error) {
 	query, args, err := squirrel.Select("id", "event_name", "event_date", "location", "chef_id").
 		From("schedules").
-		Where(squirrel.Eq{"chef_id": chefID}).
 		PlaceholderFormat(squirrel.Dollar).
 		ToSql()
 	if err != nil {

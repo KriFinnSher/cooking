@@ -39,6 +39,7 @@ func main() {
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
+	e.Use(middleware.CORS())
 
 	userRepo := postgresRepo.NewUserRepo(postgresDB)
 	//appointmentRepo := postgresRepo.NewAppointmentRepo(postgresDB)
@@ -62,21 +63,29 @@ func main() {
 	e.POST("/api/login", authHandler.Authenticate)
 
 	protectedGroup := e.Group("/api", mm.JwtMiddleware)
+	protectedGroup.GET("/users/profile", authHandler.ShowUserProfile)
+	protectedGroup.GET("/chefs/profile", authHandler.ShowChefProfile)
 
 	recipeGroup := protectedGroup.Group("/recipes")
-	recipeGroup.GET(":id/", recipeHandlers.GetRecipe)
+	recipeGroup.GET("/all/", recipeHandlers.GetAllRecipes)
+	recipeGroup.GET("/:id", recipeHandlers.GetRecipe)
 	recipeGroup.POST("", recipeHandlers.CreateRecipe)
-	recipeGroup.PUT(":id/", recipeHandlers.UpdateRecipe)
-	recipeGroup.DELETE(":id/", recipeHandlers.DeleteRecipe)
+	recipeGroup.PUT("/:id", recipeHandlers.UpdateRecipe)
+	recipeGroup.DELETE("/:id", recipeHandlers.DeleteRecipe)
 
 	scheduleGroup := protectedGroup.Group("/schedules")
-	scheduleGroup.GET(":id/", scheduleHandlers.GetEvent)
+	scheduleGroup.GET("/all/", scheduleHandlers.GetAllEvents)
+	scheduleGroup.GET("/:id", scheduleHandlers.GetEvent)
 	scheduleGroup.POST("", scheduleHandlers.CreateEvent)
-	scheduleGroup.PUT(":id/", scheduleHandlers.UpdateEvent)
-	scheduleGroup.DELETE(":id/", scheduleHandlers.DeleteEvent)
+	scheduleGroup.PUT("/:id", scheduleHandlers.UpdateEvent)
+	scheduleGroup.DELETE("/:id", scheduleHandlers.DeleteEvent)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+
+	for _, route := range e.Routes() {
+		slog.Info("Registered route", "method", route.Method, "path", route.Path)
+	}
 
 	go func() {
 		if err := e.Start(":" + config.AppConfig.Server.Port); err != nil && !errors.Is(err, http.ErrServerClosed) {

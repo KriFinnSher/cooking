@@ -39,5 +39,14 @@ services:
     networks:
       - internal
 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    networks:
+      - internal
+
 networks:
   internal:
+    driver: bridge

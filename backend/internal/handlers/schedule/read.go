@@ -28,14 +28,9 @@ func (h *Handler) GetEvent(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, response)
 }
 
-func (h *Handler) GetChefEvents(ctx echo.Context) error {
-	username := ctx.Get("username").(string)
-	chef, err := h.ChefUseCase.GetChefInfo(ctx.Request().Context(), username)
-	if err != nil {
-		return ctx.JSON(http.StatusUnauthorized, "chef not found")
-	}
+func (h *Handler) GetAllEvents(ctx echo.Context) error {
 
-	events, err := h.ScheduleUseCase.GetChefEvents(ctx.Request().Context(), chef.ID)
+	events, err := h.ScheduleUseCase.GetAllEvents(ctx.Request().Context())
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}

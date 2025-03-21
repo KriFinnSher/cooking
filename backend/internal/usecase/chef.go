@@ -32,7 +32,7 @@ func (c *ChefUseCase) RegisterChef(ctx context.Context, name, password string) (
 		return "", echo.NewHTTPError(500, "failed to create new chef")
 	}
 
-	token, err := auth.GenerateToken(name)
+	token, err := auth.GenerateToken(name, true)
 	if err != nil {
 		return "", echo.NewHTTPError(500, "failed to generate token")
 	}
@@ -51,7 +51,7 @@ func (c *ChefUseCase) AuthenticateChef(ctx context.Context, name, password strin
 		return "", echo.NewHTTPError(401, "incorrect password")
 	}
 
-	token, err := auth.GenerateToken(chefInstance.Name)
+	token, err := auth.GenerateToken(chefInstance.Name, true)
 	if err != nil {
 		return "", echo.NewHTTPError(500, "failed to generate token")
 	}

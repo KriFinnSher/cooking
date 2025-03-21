@@ -6,9 +6,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateToken(username string) (string, error) {
+func GenerateToken(username string, isChef bool) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
+		"isChef":   isChef,
 	})
 	return token.SignedString([]byte(config.AppConfig.JWT.SecretKey))
 }

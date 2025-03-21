@@ -51,3 +51,23 @@ func (h *Handler) GetAllUserRecipes(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) GetAllRecipes(ctx echo.Context) error {
+
+	recipes, err := h.RecipeUseCase.GetAllRecipes(ctx.Request().Context())
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	var response []Response
+	for _, recipe := range recipes {
+		response = append(response, Response{
+			ID:          recipe.ID,
+			Title:       recipe.Title,
+			Ingredients: recipe.Ingredients,
+			RecipeText:  recipe.RecipeText,
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, response)
+}

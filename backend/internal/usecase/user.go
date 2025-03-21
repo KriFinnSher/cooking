@@ -34,7 +34,7 @@ func (u *UserUseCase) RegisterUser(ctx context.Context, name, password string) (
 		return "", echo.NewHTTPError(500, "failed to create new user")
 	}
 
-	token, err := auth.GenerateToken(name)
+	token, err := auth.GenerateToken(name, false)
 	if err != nil {
 		return "", echo.NewHTTPError(500, "failed to generate token")
 	}
@@ -53,7 +53,7 @@ func (u *UserUseCase) AuthenticateUser(ctx context.Context, name, password strin
 		return "", echo.NewHTTPError(401, "incorrect password")
 	}
 
-	token, err := auth.GenerateToken(userInstance.Name)
+	token, err := auth.GenerateToken(userInstance.Name, false)
 	if err != nil {
 		return "", echo.NewHTTPError(500, "failed to generate token")
 	}

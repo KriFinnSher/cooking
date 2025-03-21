@@ -27,8 +27,8 @@ func (s *ScheduleUseCase) GetEventDetails(ctx context.Context, eventID int) (mod
 	return event, nil
 }
 
-func (s *ScheduleUseCase) GetChefEvents(ctx context.Context, chefID int) ([]models.Schedule, error) {
-	events, err := s.ScheduleRepo.GetChefEvents(ctx, chefID)
+func (s *ScheduleUseCase) GetAllEvents(ctx context.Context) ([]models.Schedule, error) {
+	events, err := s.ScheduleRepo.GetAllEvents(ctx)
 	if err != nil {
 		return nil, err
 	}
