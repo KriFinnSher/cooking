@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная страница</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<h1>Добро пожаловать на Cooking Masterclass</h1>
+
+<!-- Блок для отображения информации о пользователе и кнопка выхода -->
+<div id="userInfo" class="user-info" style="display: none;">
+  <span id="username"></span>
+  <button id="logoutButton">Выйти</button>
+</div>
+
+<!-- Кнопки входа и регистрации -->
+<div class="auth-buttons" id="authButtons">
+  <a href="login.html">Войти</a>
+  <a href="reg.html">Зарегистрироваться</a>
+</div>
+
+<!-- Карточки для редиректов -->
+<div class="card-container">
+  <div class="card">
+    <img src="../assets/mc.png" alt="Мастер-классы">
+    <h2>Мастер-классы</h2>
+    <p>Запишитесь на наши мастер-классы по кулинарии.</p>
+    <!-- Добавляем ссылку на страницу мастер-классов -->
+    <p><a href="schedules.html">Перейти к мастер-классам</a></p>
+  </div>
+  <div class="card">
+    <img src="../assets/chef.jpg" alt="Шефы">
+    <h2>Шефы</h2>
+    <p>Познакомьтесь с нашими шефами-поварами.</p>
+  </div>
+  <div class="card">
+    <img src="../assets/prof.png  " alt="Профиль">
+    <h2>Мой профиль</h2>
+    <p>
+      <a href="#" id="profileLink">Посмотрите и отредактируйте свой профиль</a>
+    </p>
+  </div>
+  <!-- Новая карточка для рецептов -->
+  <div class="card">
+    <img src="../assets/food.jpg" alt="рецепты">
+    <h2>Мои рецепты</h2>
+    <p>
+      <a href="recipes.html">Перейти к рецептам</a>
+    </p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script>
+  // Функция для проверки наличия токена и извлечения имени пользователя
+  function checkAuth() {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      try {
+        const decoded = jwt_decode(token); // Декодируем токен
+        const username = decoded.username || 'Пользователь';
+        document.getElementById('username').textContent = `Привет, ${username}!`;
+
+        // Показать информацию о пользователе и скрыть кнопки входа/регистрации
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('authButtons').style.display = 'none';
+
+        // Добавить ссылку на профиль в зависимости от типа пользователя
+        const profileLink = document.getElementById('profileLink');
+        if (decoded.isChef) {
+          profileLink.href = 'chef_profile.html'; // Ссылка на профиль шефа
+        } else {
+          profileLink.href = 'user_profile.html'; // Ссылка на профиль обычного пользователя
+        }
+
+        // Обработчик кнопки выхода
+        document.getElementById('logoutButton').addEventListener('click', function() {
+          localStorage.removeItem('jwtToken'); // Удаление токена из localStorage
+          window.location.reload(); // Перезагрузка страницы, чтобы обновить отображение
+        });
+      } catch (error) {
+        console.error('Ошибка при декодировании токена:', error);
+      }
+    } else {
+      // Если токен отсутствует, показываем кнопки входа/регистрации
+      document.getElementById('userInfo').style.display = 'none';
+      document.getElementById('authButtons').style.display = 'block';
+    }
+  }
+
+  // Проверяем авторизацию при загрузке страницы
+  window.onload = checkAuth;
+</script>
+</body>
+</html>

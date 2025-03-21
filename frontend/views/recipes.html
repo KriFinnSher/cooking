@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепты</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<a href="index.html" class="btn-home">На главную</a>
+
+<h1>Рецепты</h1>
+
+<div id="recipes-container" class="recipe-grid"></div>
+<button id="create-recipe-button" class="create-recipe-button">Создать рецепт</button>
+<div id="create-recipe-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Создать новый рецепт</h2>
+        <form id="create-recipe-form">
+            <label for="new-recipe-title">Название рецепта:</label>
+            <input type="text" id="new-recipe-title" required>
+
+            <label for="new-recipe-ingredients">Ингредиенты (в формате JSON):</label>
+            <textarea id="new-recipe-ingredients" required></textarea>
+
+            <label for="new-recipe-text">Текст рецепта:</label>
+            <textarea id="new-recipe-text" required></textarea>
+
+            <button type="submit">Создать рецепт</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Модальное окно для детального просмотра рецепта -->
+<!-- Модальное окно для детального просмотра и редактирования рецепта -->
+<div id="recipe-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="recipe-title"></h2>
+        <p><strong>Ингредиенты:</strong></p>
+        <ul id="recipe-ingredients"></ul>
+        <p id="recipe-text"></p>
+
+        <!-- Форма редактирования -->
+        <div id="edit-form" style="display: none;">
+            <label for="edit-title">Название рецепта:</label>
+            <input type="text" id="edit-title" />
+
+            <label for="edit-ingredients">Ингредиенты (в формате JSON):</label>
+            <textarea id="edit-ingredients"></textarea>
+
+            <label for="edit-recipe-text">Текст рецепта:</label>
+            <textarea id="edit-recipe-text"></textarea>
+
+            <button id="save-changes">Сохранить изменения</button>
+        </div>
+
+        <button id="edit-button">Редактировать</button>
+        <button id="delete-button">Удалить</button>
+    </div>
+</div>
+
+
+<script src="../js/recipes.js"></script>
+</body>
+</html>

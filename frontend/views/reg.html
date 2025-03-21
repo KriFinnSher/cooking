@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<h1>Регистрация на Cooking Masterclass</h1>
+
+<form id="registrationForm" class="registration-form">
+  <label for="username">Имя пользователя</label>
+  <input type="text" id="username" name="username" required placeholder="Введите имя пользователя">
+
+  <label for="password">Пароль</label>
+  <input type="password" id="password" name="password" required placeholder="Введите пароль">
+
+  <label for="chef">Я шеф-повар</label>
+  <input type="checkbox" id="chef" name="chef">
+
+  <button type="submit">Зарегистрироваться</button>
+</form>
+
+<p id="errorMessage" class="error-message" style="display:none;"></p>
+
+<script>
+  // Обработка отправки формы
+  document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Отменить стандартное действие формы
+
+    // Сбор данных с формы
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const chef = document.getElementById('chef').checked;
+
+    const requestData = {
+      username: username,
+      password: password,
+      chef: chef
+    };
+
+    // Отправка данных на сервер для регистрации
+    fetch('http://localhost:8080/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.token) {
+                // Сохранение JWT токена в localStorage
+                localStorage.setItem('jwtToken', data.token);
+                alert('Регистрация успешна! Вы можете войти.');
+                window.location.href = 'login.html'; // Перенаправление на страницу входа
+              } else {
+                throw new Error('Ошибка регистрации');
+              }
+            })
+            .catch(error => {
+              document.getElementById('errorMessage').textContent = error.message;
+              document.getElementById('errorMessage').style.display = 'block';
+            });
+  });
+</script>
+</body>
+</html>

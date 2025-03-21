@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль шефа</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<h1>Профиль шефа</h1>
+
+<!-- Блок с информацией о шефе -->
+<div id="profileInfo">
+  <img id="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
+  <h2 id="profileName">Имя шефа</h2>
+  <p id="bio">Биография: <span>Нет информации</span></p>
+  <p id="followersCount">Количество подписчиков: 0</p>
+</div>
+
+<!-- Кнопка выхода -->
+<button id="logoutButton">Выйти</button>
+
+<script>
+  // Функция для получения и отображения профиля шефа
+  function fetchChefProfile() {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      const headers = {
+        'Authorization': `Bearer ${token}`
+      };
+
+      // Запрос к API для получения профиля шефа
+      fetch('http://localhost:8080/api/chefs/profile', { headers })
+              .then(response => response.json())
+              .then(data => {
+                if (data.username) {
+                  document.getElementById('profileName').textContent = data.username;
+                  if (data.avatar) {
+                    document.getElementById('avatar').src = data.avatar;
+                  }
+                  if (data.bio) {
+                    document.getElementById('bio').innerHTML = `Биография: ${data.bio}`;
+                  }
+                  if (data.followers) {
+                    document.getElementById('followersCount').textContent = `Количество подписчиков: ${data.followers}`;
+                  }
+                } else {
+                  alert('Ошибка получения данных шефа');
+                }
+              })
+              .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Не удалось загрузить профиль шефа');
+              });
+    } else {
+      window.location.href = 'login.html'; // Если нет токена, перенаправляем на страницу входа
+    }
+  }
+
+  // Выход из системы
+  document.getElementById('logoutButton').addEventListener('click', function() {
+    localStorage.removeItem('jwtToken'); // Удаление токена из localStorage
+    window.location.href = 'index.html'; // Перенаправляем на главную страницу
+  });
+
+  // Загружаем данные профиля при загрузке страницы
+  window.onload = fetchChefProfile;
+</script>
+</body>
+</html>
