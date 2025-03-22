@@ -1,8 +1,11 @@
 FROM nginx:alpine
 
-COPY . /usr/share/nginx/html
+COPY ./views/ /usr/share/nginx/html/
+
+COPY ./css/ /usr/share/nginx/html/css/
+COPY ./js/ /usr/share/nginx/html/js/
+COPY ./images/ /usr/share/nginx/html/images/
 
 EXPOSE 80
 
-# Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]
