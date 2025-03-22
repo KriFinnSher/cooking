@@ -40,23 +40,26 @@
         </form>
     </div>
 </div>
-<!-- Форма для создания нового события -->
-<div id="create-event-form-container" class="create-event-form-container" style="display: none;">
-    <h2>Создать новое событие</h2>
-    <form id="create-event-form">
-        <label for="event-name">Название события:</label>
-        <input type="text" id="event-name" required>
+<!-- Модальное окно для создания нового события -->
+<div id="schedule_create-event-modal" class="schedule_modal">
+    <div class="schedule_modal-content">
+        <span class="schedule_close" id="schedule_create-close">&times;</span>
+        <h2>Создать новое событие</h2>
+        <form id="schedule_create-event-form">
+            <label for="schedule_event-name">Название события:</label>
+            <input type="text" id="schedule_event-name" required>
 
-        <label for="event-date">Дата события:</label>
-        <input type="date" id="event-date" required>
+            <label for="schedule_event-date">Дата события:</label>
+            <input type="date" id="schedule_event-date" required>
 
-        <label for="event-location">Место события:</label>
-        <input type="text" id="event-location" required>
+            <label for="schedule_event-location">Место события:</label>
+            <input type="text" id="schedule_event-location" required>
 
-        <button type="submit" class="btn">Создать событие</button>
-        <button type="button" id="cancel-create-event-btn" class="btn">Отменить</button>
-    </form>
+            <button type="submit" class="btn">Создать событие</button>
+        </form>
+    </div>
 </div>
+
 
 
 <script src="../js/schedules.js"></script>

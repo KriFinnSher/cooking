@@ -13,8 +13,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const editDate = document.getElementById("schedule_edit-date");
     const editLocation = document.getElementById("schedule_edit-location");
 
-    const createEventBtn = document.getElementById("schedule_create-event-btn");
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split(".")[1]; // Берем payload
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            return null;
+        }
+    }
+
+// Получаем информацию о пользователе
     const token = localStorage.getItem("jwtToken");
+    const user = token ? parseJwt(token) : null;
+    const isChef = user?.isChef || false; // Проверяем, шеф ли он
+
+    if (!isChef) {
+        saveChangesBtn.style.display = 'none';
+    }
+
     let currentScheduleId = null;
 
     // Загрузка всех событий
@@ -69,6 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error("Ошибка загрузки события:", error));
     }
+    const editBtn = document.getElementById("schedule_edit-schedule-btn")
+    if (!isChef) {
+        editBtn.style.display = 'none';
+    }
 
     // Открытие формы редактирования
     document.getElementById("schedule_edit-schedule-btn").addEventListener("click", () => {
@@ -105,6 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Ошибка обновления события:", error));
     });
 
+    const delBtn = document.getElementById("schedule_delete-schedule-btn")
+    if (!isChef) {
+        delBtn.style.display = 'none';
+    }
     // Удаление события
     document.getElementById("schedule_delete-schedule-btn").addEventListener("click", () => {
         if (!confirm("Вы уверены, что хотите удалить это событие?")) return;
@@ -138,36 +169,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Создание нового события
-    const createEventFormContainer = document.getElementById("create-event-form-container");
-    const createEventForm = document.getElementById("create-event-form");
-    const cancelCreateEventBtn = document.getElementById("cancel-create-event-btn");
 
-    const eventNameInput = document.getElementById("event-name");
-    const eventDateInput = document.getElementById("event-date");
-    const eventLocationInput = document.getElementById("event-location");
+    // Получаем ссылки на элементы модального окна
+    const createEventModal = document.getElementById("schedule_create-event-modal");
+    const createEventForm = document.getElementById("schedule_create-event-form");
+    const createEventBtn = document.getElementById("schedule_create-event-btn");
+    const createCloseBtn = document.getElementById("schedule_create-close");
 
-    // Открыть форму создания события
+// Поля ввода
+    const eventNameInput = document.getElementById("schedule_event-name");
+    const eventDateInput = document.getElementById("schedule_event-date");
+    const eventLocationInput = document.getElementById("schedule_event-location");
+
+// Открытие модального окна
     createEventBtn.addEventListener("click", () => {
-        createEventFormContainer.style.display = "block";
+        createEventModal.style.display = "flex";
     });
 
-    // Отменить создание события и скрыть форму
-    cancelCreateEventBtn.addEventListener("click", () => {
-        createEventFormContainer.style.display = "none";
+// Закрытие модального окна
+    createCloseBtn.addEventListener("click", () => {
+        createEventModal.style.display = "none";
     });
 
-    // Обработчик отправки формы
+
+// Закрытие при клике вне формы
+    window.addEventListener("click", (event) => {
+        if (event.target === createEventModal) {
+            createEventModal.style.display = "none";
+        }
+    });
+
+// Обработчик отправки формы
     createEventForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
+        const formattedDate = new Date(eventDateInput.value).toISOString();
+
         const newEvent = {
             event_name: eventNameInput.value,
-            event_date: eventDateInput.value,
+            event_date: formattedDate,
             location: eventLocationInput.value
         };
 
-        // Проверка наличия всех данных
         if (newEvent.event_name && newEvent.event_date && newEvent.location) {
             fetch("http://localhost:8080/api/schedules", {
                 method: "POST",
@@ -178,9 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(newEvent)
             })
                 .then(response => response.json())
-                .then(data => {
+                .then(() => {
                     alert("Событие успешно создано!");
-                    createEventFormContainer.style.display = "none"; // Закрыть форму
+                    createEventModal.style.display = "none"; // Закрыть модальное окно
                     fetchSchedules(); // Обновить список событий
                 })
                 .catch(error => {

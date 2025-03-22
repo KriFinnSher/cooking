@@ -5,13 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль пользователя</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Центрируем весь контент на странице */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Обертка для профиля */
+        #profileInfo {
+            text-align: center; /* Центрируем текст */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        /* Стиль для аватара */
+        #avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        /* Стиль для заголовков */
+        h1, h2 {
+            margin: 0;
+            padding: 10px;
+        }
+
+        /* Стиль для кнопки */
+        #logoutButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #logoutButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>Профиль пользователя</h1>
-
-<!-- Блок с информацией о пользователе -->
 <div id="profileInfo">
-    <img id="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
+    <h1>Профиль пользователя</h1>
+    <img id="avatar" src="../../backend/images/povar.png" alt="Avatar" />
     <h2 id="profileName">Имя пользователя</h2>
 </div>
 
@@ -32,7 +81,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.username) {
-                        document.getElementById('profileName').textContent = data.username;
+                        document.getElementById('profileName').textContent = `имя: ${data.username}`;
                         if (data.avatar) {
                             document.getElementById('avatar').src = data.avatar;
                         }

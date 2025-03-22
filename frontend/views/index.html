@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Главная страница</title>
   <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* Убираем подчеркивание и выделение ссылок в карточках */
+    .card a {
+      text-decoration: none;  /* Убираем подчеркивание */
+      outline: none;  /* Убираем выделение */
+      color: #328fc1;  /* Сохраняем цвет текста */
+    }
+
+    /* Можно также добавить стиль при наведении */
+    .card a:hover {
+      color: #007bff;  /* Например, цвет при наведении */
+    }
+  </style>
 </head>
 <body>
-<h1>Добро пожаловать на Cooking Masterclass</h1>
+<h1>Добро пожаловать на Cooking Masterclass!</h1>
 
 <!-- Блок для отображения информации о пользователе и кнопка выхода -->
 <div id="userInfo" class="user-info" style="display: none;">
@@ -24,19 +37,18 @@
 <!-- Карточки для редиректов -->
 <div class="card-container">
   <div class="card">
-    <img src="../assets/mc.png" alt="Мастер-классы">
+    <img src="../assets/mc.jpg" alt="Мастер-классы">
     <h2>Мастер-классы</h2>
-    <p>Запишитесь на наши мастер-классы по кулинарии.</p>
     <!-- Добавляем ссылку на страницу мастер-классов -->
-    <p><a href="schedules.html">Перейти к мастер-классам</a></p>
+    <p><a href="schedules.html">Ознакомьтесь с актуальными мероприятиями</a></p>
   </div>
   <div class="card">
-    <img src="../assets/chef.jpg" alt="Шефы">
+    <img src="../assets/chef.png" alt="Шефы">
     <h2>Шефы</h2>
     <p>Познакомьтесь с нашими шефами-поварами.</p>
   </div>
   <div class="card">
-    <img src="../assets/prof.png  " alt="Профиль">
+    <img src="../assets/prof.png" alt="Профиль">
     <h2>Мой профиль</h2>
     <p>
       <a href="#" id="profileLink">Посмотрите и отредактируйте свой профиль</a>
@@ -44,10 +56,10 @@
   </div>
   <!-- Новая карточка для рецептов -->
   <div class="card">
-    <img src="../assets/food.jpg" alt="рецепты">
+    <img src="../assets/food.png" alt="рецепты">
     <h2>Мои рецепты</h2>
     <p>
-      <a href="recipes.html">Перейти к рецептам</a>
+      <a href="recipes.html">Храните свои рецепты у нас</a>
     </p>
   </div>
 </div>
