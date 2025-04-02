@@ -67,7 +67,7 @@ func main() {
 	protectedGroup.GET("/chefs/profile", authHandler.ShowChefProfile)
 
 	recipeGroup := protectedGroup.Group("/recipes")
-	recipeGroup.GET("/all/", recipeHandlers.GetAllRecipes)
+	e.GET("/api/recipes/all/", recipeHandlers.GetAllRecipes)
 	recipeGroup.GET("/:id", recipeHandlers.GetRecipe)
 	recipeGroup.POST("", recipeHandlers.CreateRecipe)
 	recipeGroup.PUT("/:id", recipeHandlers.UpdateRecipe)
