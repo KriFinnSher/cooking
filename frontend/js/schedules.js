@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.className = "schedule_schedule-card";
                     card.innerHTML = `
                     <h3>${schedule.event_name}</h3>
-                    <p><strong>Дата:</strong> ${new Date(schedule.event_date).toLocaleDateString()}</p>
-                    <p><strong>Место:</strong> ${schedule.location}</p>
+                    <p><strong>Названиие маршрута:</strong> ${schedule.event_name}</p>
+                    <p><strong>Оценка:</strong> ${schedule.event_date}</p>
                     <button class="schedule_details-btn" data-id="${schedule.id}">Подробнее</button>
                 `;
                     schedulesContainer.appendChild(card);
@@ -80,12 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(schedule => {
                 currentScheduleId = id;
                 scheduleName.textContent = schedule.event_name;
-                scheduleDate.textContent = new Date(schedule.event_date).toLocaleDateString();
+                scheduleDate.textContent = schedule.event_date;
                 scheduleLocation.textContent = schedule.location;
 
                 // Заполняем форму редактирования
                 editName.value = schedule.event_name;
-                editDate.value = new Date(schedule.event_date).toISOString().split('T')[0];
+                editDate.value = schedule.event_date;
                 editLocation.value = schedule.location;
 
                 modal.style.display = "flex";
@@ -103,12 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     saveChangesBtn.addEventListener("click", () => {
-        // Преобразуем дату в нужный формат с временем
-        const formattedDate = new Date(editDate.value).toISOString().split('T')[0] + "T00:00:00Z";
-
         const updatedSchedule = {
             event_name: editName.value,
-            event_date: formattedDate, // Используем отформатированную дату
+            event_date: editDate.value, // Используем отформатированную дату
             location: editLocation.value
         };
 
@@ -125,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(() => {
-                alert("Событие обновлено!");
+                alert("Отзыв обновлен!");
                 modal.style.display = "none";
                 fetchSchedules();
             })
@@ -138,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Удаление события
     document.getElementById("schedule_delete-schedule-btn").addEventListener("click", () => {
-        if (!confirm("Вы уверены, что хотите удалить это событие?")) return;
+        if (!confirm("Вы уверены, что хотите удалить этот отзыв?")) return;
 
         fetch(`http://localhost:8080/api/schedules/${currentScheduleId}`, {
             method: "DELETE",
@@ -181,6 +178,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const eventDateInput = document.getElementById("schedule_event-date");
     const eventLocationInput = document.getElementById("schedule_event-location");
 
+    if (!isChef) {
+        createEventBtn.style.display = "none"
+    }
 // Открытие модального окна
     createEventBtn.addEventListener("click", () => {
         createEventModal.style.display = "flex";
@@ -203,11 +203,9 @@ document.addEventListener("DOMContentLoaded", () => {
     createEventForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const formattedDate = new Date(eventDateInput.value).toISOString();
-
         const newEvent = {
             event_name: eventNameInput.value,
-            event_date: formattedDate,
+            event_date: eventDateInput.value,
             location: eventLocationInput.value
         };
 
@@ -222,13 +220,13 @@ document.addEventListener("DOMContentLoaded", () => {
             })
                 .then(response => response.json())
                 .then(() => {
-                    alert("Событие успешно создано!");
+                    alert("Отзыв успешно добавлен!");
                     createEventModal.style.display = "none"; // Закрыть модальное окно
                     fetchSchedules(); // Обновить список событий
                 })
                 .catch(error => {
                     console.error("Ошибка создания события:", error);
-                    alert("Не удалось создать событие.");
+                    alert("Не удалось добавить отзыв.");
                 });
         } else {
             alert("Пожалуйста, заполните все поля!");

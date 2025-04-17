@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.className = "recipe-card";
                     card.innerHTML = `
                     <h3>${recipe.title}</h3>
-                    <p><strong>Ингредиенты:</strong> ${Object.keys(recipe.ingredients).length} шт.</p>
+                    <p><strong>Интересные места:</strong> ${Object.keys(recipe.ingredients).length} шт.</p>
                     <button class="details-btn" data-id="${recipe.id}">Подробнее</button>
                 `;
                     recipesContainer.appendChild(card);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 recipeTitle.textContent = recipe.title;
                 recipeIngredients.innerHTML = Object.entries(recipe.ingredients)
-                    .map(([ingredient, quantity]) => `<li>${ingredient}: ${quantity} г</li>`)
+                    .map(([ingredient, quantity]) => `<li>${ingredient}: ${quantity} ч.</li>`)
                     .join("");
                 recipeText.textContent = recipe.recipe_text;
 
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(() => {
-                alert("Рецепт обновлен!");
+                alert("Маршрут обновлен!");
                 modal.style.display = "none";
                 fetchRecipes(); // Перезагружаем рецепты
             })
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Кнопка "Удалить"
     deleteButton.addEventListener("click", () => {
-        if (!confirm("Вы уверены, что хотите удалить рецепт?")) return;
+        if (!confirm("Вы уверены, что хотите удалить маршрут?")) return;
 
         fetch(`http://localhost:8080/api/recipes/${currentRecipeId}`, {
             method: "DELETE",
@@ -126,11 +126,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(() => {
-                alert("Рецепт удален!");
+                alert("Маршрут удален!");
                 modal.style.display = "none";
                 fetchRecipes(); // Перезагружаем рецепты
             })
-            .catch(error => console.error("Ошибка удаления рецепта:", error));
+            .catch(error => console.error("Ошибка удаления маршрута:", error));
     });
 
     // Закрытие модального окна
@@ -176,14 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    alert("Рецепт успешно создан!");
+                    alert("Маршрут успешно создан!");
                     createRecipeModal.style.display = "none"; // Закрываем модальное окно
                     fetchRecipes(); // Перезагружаем рецепты
                 }
             })
             .catch(error => {
                 console.error("Ошибка создания рецепта:", error);
-                alert("Не удалось создать рецепт.");
+                alert("Не удалось добавить маршрут.");
             });
     });
 

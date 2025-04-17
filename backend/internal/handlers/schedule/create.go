@@ -4,21 +4,21 @@ import (
 	"cooking/backend/internal/usecase"
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"time"
+	"strconv"
 )
 
 type Request struct {
-	EventName string    `json:"event_name"`
-	EventDate time.Time `json:"event_date"`
-	Location  string    `json:"location"`
+	EventName string `json:"event_name"`
+	EventDate string `json:"event_date"`
+	Location  string `json:"location"`
 }
 
 type Response struct {
-	ID        int       `json:"id"`
-	EventName string    `json:"event_name"`
-	EventDate time.Time `json:"event_date"`
-	Location  string    `json:"location"`
-	ChefID    int       `json:"chef_id"`
+	ID        int    `json:"id"`
+	EventName string `json:"event_name"`
+	EventDate string `json:"event_date"`
+	Location  string `json:"location"`
+	ChefID    int    `json:"chef_id"`
 }
 
 type Handler struct {
@@ -42,7 +42,8 @@ func (h *Handler) CreateEvent(ctx echo.Context) error {
 		return ctx.JSON(http.StatusUnauthorized, "chef not found")
 	}
 
-	err = h.ScheduleUseCase.CreateEvent(ctx.Request().Context(), req.EventName, req.EventDate, req.Location, chef.ID)
+	mark, _ := strconv.Atoi(req.EventDate)
+	err = h.ScheduleUseCase.CreateEvent(ctx.Request().Context(), req.EventName, mark, req.Location, chef.ID)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}

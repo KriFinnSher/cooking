@@ -16,11 +16,12 @@ func (h *Handler) GetEvent(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(http.StatusNotFound, "event not found")
 	}
+	mark := strconv.Itoa(eventDetails.EventDate)
 
 	response := Response{
 		ID:        eventDetails.ID,
 		EventName: eventDetails.EventName,
-		EventDate: eventDetails.EventDate,
+		EventDate: mark,
 		Location:  eventDetails.Location,
 		ChefID:    eventDetails.ChefID,
 	}
@@ -36,11 +37,13 @@ func (h *Handler) GetAllEvents(ctx echo.Context) error {
 	}
 
 	var response []Response
+
 	for _, event := range events {
+		mark := strconv.Itoa(event.EventDate)
 		response = append(response, Response{
 			ID:        event.ID,
 			EventName: event.EventName,
-			EventDate: event.EventDate,
+			EventDate: mark,
 			Location:  event.Location,
 			ChefID:    event.ChefID,
 		})

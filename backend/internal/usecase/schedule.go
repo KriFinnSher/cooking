@@ -4,7 +4,6 @@ import (
 	"context"
 	"cooking/backend/internal/models"
 	"cooking/backend/internal/usecase/schedule"
-	"time"
 )
 
 type ScheduleUseCase struct {
@@ -15,7 +14,7 @@ func ScheduleInstance(repo schedule.Repo) *ScheduleUseCase {
 	return &ScheduleUseCase{ScheduleRepo: repo}
 }
 
-func (s *ScheduleUseCase) CreateEvent(ctx context.Context, title string, date time.Time, place string, chefID int) error {
+func (s *ScheduleUseCase) CreateEvent(ctx context.Context, title string, date int, place string, chefID int) error {
 	return s.ScheduleRepo.CreateEvent(ctx, title, date, place, chefID)
 }
 
@@ -35,7 +34,7 @@ func (s *ScheduleUseCase) GetAllEvents(ctx context.Context) ([]models.Schedule, 
 	return events, nil
 }
 
-func (s *ScheduleUseCase) UpdateEventDetails(ctx context.Context, eventID int, title string, date time.Time, place string, chefID int) error {
+func (s *ScheduleUseCase) UpdateEventDetails(ctx context.Context, eventID int, title string, date int, place string, chefID int) error {
 	err := s.ScheduleRepo.UpdateEvent(ctx, eventID, title, place, date, chefID)
 	if err != nil {
 		return err

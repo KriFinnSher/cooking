@@ -27,7 +27,8 @@ func (h *Handler) UpdateEvent(ctx echo.Context) error {
 		return ctx.JSON(http.StatusUnauthorized, "chef not found")
 	}
 
-	err = h.ScheduleUseCase.UpdateEventDetails(ctx.Request().Context(), eventID, req.EventName, req.EventDate, req.Location, chef.ID)
+	mark, _ := strconv.Atoi(req.EventDate)
+	err = h.ScheduleUseCase.UpdateEventDetails(ctx.Request().Context(), eventID, req.EventName, mark, req.Location, chef.ID)
 	if err != nil {
 		fmt.Println(err)
 		return ctx.JSON(http.StatusInternalServerError, err.Error())

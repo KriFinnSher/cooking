@@ -5,7 +5,6 @@ import (
 	"cooking/backend/internal/models"
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
-	"time"
 )
 
 type ScheduleRepo struct {
@@ -16,7 +15,7 @@ func NewScheduleRepo(db *sqlx.DB) *ScheduleRepo {
 	return &ScheduleRepo{db: db}
 }
 
-func (r *ScheduleRepo) CreateEvent(ctx context.Context, title string, date time.Time, place string, chefID int) error {
+func (r *ScheduleRepo) CreateEvent(ctx context.Context, title string, date int, place string, chefID int) error {
 	query, args, err := squirrel.Insert("schedules").
 		Columns("event_name", "event_date", "location", "chef_id").
 		Values(title, date, place, chefID).
@@ -67,7 +66,7 @@ func (r *ScheduleRepo) GetAllEvents(ctx context.Context) ([]models.Schedule, err
 	return schedules, nil
 }
 
-func (r *ScheduleRepo) UpdateEvent(ctx context.Context, eventID int, title, place string, date time.Time, chefID int) error {
+func (r *ScheduleRepo) UpdateEvent(ctx context.Context, eventID int, title, place string, date int, chefID int) error {
 	query, args, err := squirrel.Update("schedules").
 		Set("event_name", title).
 		Set("event_date", date).

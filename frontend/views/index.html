@@ -20,7 +20,7 @@
   </style>
 </head>
 <body>
-<h1>Добро пожаловать на Cooking Masterclass!</h1>
+<h1>Добро пожаловать на Route-Master!</h1>
 
 <!-- Блок для отображения информации о пользователе и кнопка выхода -->
 <div id="userInfo" class="user-info" style="display: none;">
@@ -37,15 +37,15 @@
 <!-- Карточки для редиректов -->
 <div class="card-container">
   <div class="card">
-    <img src="../assets/mc.jpg" alt="Мастер-классы">
-    <h2>Мастер-классы</h2>
+    <img src="../assets/review.png" alt="Мастер-классы">
+    <h2>Отзывы</h2>
     <!-- Добавляем ссылку на страницу мастер-классов -->
-    <p><a href="schedules.html">Ознакомьтесь с актуальными мероприятиями</a></p>
+    <p><a href="schedules.html">Оставляйте отзывы прямо на сайте</a></p>
   </div>
   <div class="card">
-    <img src="../assets/chef.png" alt="Шефы">
-    <h2>Шефы</h2>
-    <p>Познакомьтесь с нашими шефами-поварами.</p>
+    <img src="../assets/pi.png" alt="Шефы">
+    <h2>Точки интереса</h2>
+    <p>Узнайте, какие точки интереса у нас есть</p>
   </div>
   <div class="card">
     <img src="../assets/prof.png" alt="Профиль">
@@ -56,10 +56,10 @@
   </div>
   <!-- Новая карточка для рецептов -->
   <div class="card">
-    <img src="../assets/food.png" alt="рецепты">
-    <h2>Мои рецепты</h2>
+    <img src="../assets/route.png" alt="рецепты">
+    <h2>Маршруты</h2>
     <p>
-      <a href="recipes.html">Храните свои рецепты у нас</a>
+      <a href="recipes.html">Посмотрите на маршруты, созданные пользователями</a>
     </p>
   </div>
 </div>
@@ -73,7 +73,7 @@
       try {
         const decoded = jwt_decode(token); // Декодируем токен
         const username = decoded.username || 'Пользователь';
-        document.getElementById('username').textContent = `Привет, ${username}!`;
+        document.getElementById('username').textContent = `Приветствую на сайте, ${username} :)`;
 
         // Показать информацию о пользователе и скрыть кнопки входа/регистрации
         document.getElementById('userInfo').style.display = 'block';
@@ -82,7 +82,7 @@
         // Добавить ссылку на профиль в зависимости от типа пользователя
         const profileLink = document.getElementById('profileLink');
         if (decoded.isChef) {
-          profileLink.href = 'chef_profile.html'; // Ссылка на профиль шефа
+          profileLink.href = 'user_profile.html'; // Ссылка на профиль шефа
         } else {
           profileLink.href = 'user_profile.html'; // Ссылка на профиль обычного пользователя
         }

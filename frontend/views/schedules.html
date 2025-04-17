@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>События</title>
+    <title>Отзывы</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-<a href="index.html" class="schedule_btn-home">На главную</a>
+<a href="index.html" class="schedule_btn-home">Вернуться назад</a>
 
-<h1>События</h1>
-<button id="schedule_create-event-btn" class="schedule_btn">Создать событие</button>
+<h1>Мои отзывы</h1>
+<button id="schedule_create-event-btn" class="schedule_btn">Написать отзыв</button>
 <div id="schedule_schedules-container" class="schedule_schedule-grid"></div>
 
 <!-- Модальное окно для детального просмотра события -->
 <div id="schedule_schedule-modal" class="schedule_modal">
     <div class="schedule_modal-content">
         <span class="schedule_close">&times;</span>
-        <h2 id="schedule_schedule-name"></h2>
-        <p><strong>Дата:</strong> <span id="schedule_schedule-date"></span></p>
-        <p><strong>Место:</strong> <span id="schedule_schedule-location"></span></p>
+        <h2 id="schedule_schedule-title1"></h2>
+        <p><strong>Название маршрута:</strong> <span id="schedule_schedule-name"></span></p>
+        <p><strong>Оценка:</strong> <span id="schedule_schedule-date"></span></p>
+        <p><strong>Текст отзыва:</strong> <span id="schedule_schedule-location"></span></p>
 
         <!-- Кнопки редактирования и удаления -->
-        <button id="schedule_edit-schedule-btn" class="schedule_btn">Редактировать</button>
+        <button id="schedule_edit-schedule-btn" class="schedule_btn">Изменить</button>
         <button id="schedule_delete-schedule-btn" class="schedule_btn">Удалить</button>
 
         <!-- Форма для редактирования -->
         <form id="schedule_edit-form" style="display:none;">
-            <label for="schedule_edit-name">Название события:</label>
+            <label for="schedule_edit-name">Название маршрута:</label>
             <input type="text" id="schedule_edit-name" required>
 
-            <label for="schedule_edit-date">Дата:</label>
-            <input type="date" id="schedule_edit-date" required>
+            <label for="schedule_edit-date">Оценка:</label>
+            <input type="text" id="schedule_edit-date" required>
 
-            <label for="schedule_edit-location">Место:</label>
-            <input type="text" id="schedule_edit-location" required>
+            <label for="schedule_edit-location">Текст отзыва:</label>
+            <textarea id="schedule_edit-location" required></textarea>
 
             <button type="button" id="schedule_save-changes">Сохранить изменения</button>
         </form>
@@ -44,18 +45,18 @@
 <div id="schedule_create-event-modal" class="schedule_modal">
     <div class="schedule_modal-content">
         <span class="schedule_close" id="schedule_create-close">&times;</span>
-        <h2>Создать новое событие</h2>
+        <h2>Заполните форму</h2>
         <form id="schedule_create-event-form">
-            <label for="schedule_event-name">Название события:</label>
+            <label for="schedule_event-name">Название маршрута:</label>
             <input type="text" id="schedule_event-name" required>
 
-            <label for="schedule_event-date">Дата события:</label>
-            <input type="date" id="schedule_event-date" required>
+            <label for="schedule_event-date">Оценка:</label>
+            <input type="text" id="schedule_event-date" required>
 
-            <label for="schedule_event-location">Место события:</label>
-            <input type="text" id="schedule_event-location" required>
+            <label for="schedule_event-location">Текст отзыва:</label>
+            <textarea id="schedule_event-location" required></textarea>
 
-            <button type="submit" class="btn">Создать событие</button>
+            <button type="submit" class="btn">Создать</button>
         </form>
     </div>
 </div>
